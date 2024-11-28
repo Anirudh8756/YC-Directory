@@ -14,6 +14,15 @@
   }
 }
 
+@layer utilities {
+  .heading {
+    @apply uppercase bg-black font-work-sans px-6 py-3 font-extrabold text-white mx-auto
+      sm:text-[54px] sm:leading-[64px] text-[36px] leading-[46px] max-w-5xl 
+      text-center my-5;
+  }
+}
+
+
 body {
   color: var(--foreground);
   background: var(--background);
