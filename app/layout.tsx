@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import Image from 'next/image';
+
 
 const workSans = localFont({
   src: [
@@ -67,14 +67,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={workSans.variable}>
-        <div className="h-[60px] bg-white flex justify-between items-center px-[26px]"> 
-        <Image
-      src="/logo.png"
-      width={210}
-      height={20}
-      alt="Picture of the author"
-    />
-        </div>
         {children}
       </body>
     </html>
