@@ -1,19 +1,13 @@
+import { client } from "@/sanity/lib/client";
 import SearchForm from "../../components/searchForm";
 import StartupCard from "@/components/StartupCard";
+import { STARTUPS_QUERY } from "@/sanity/lib/query";
+import { json } from "stream/consumers";
 export default async function Home({searchParams} : {searchParams: Promise<{query?: string}>}) {
-  const query = (await searchParams).query;
+  const query = (await searchParams).query; 
 
-  const posts = [{
-    _createdAt: new Date(),
-    views: 323, 
-    author: { _id: 1, name: 'Anirudh' , joinedAt:'2 Years Ago' , user_profile_image:"https://dummyimage.com/300.png/09f/fff&text=Anirudh+Das", },
-    _id: 1, 
-    description: 'This is a description', 
-    image: 'https://picsum.photos/id/237/200/300',
-    category: 'Robots',
-    title: 'Wrath Corps.'
-  }
-];
+  const posts = await client.fetch(STARTUPS_QUERY);
+  console.log(JSON.stringify(posts))
   return (
     <>
     <section className="pink_container">

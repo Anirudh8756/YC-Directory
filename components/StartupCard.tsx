@@ -4,8 +4,9 @@ import { EyeIcon } from 'lucide-react'
 import Image from 'next/image';
 import Link from 'next/link';
 import {Button } from './ui/button';
+import { format } from 'path';
 const StartupCard = ({post}: {post: startupTypeCard}) => {
-  const { _createdAt , views , description ,author:{_id: authorId , name , user_profile_image: profile_url} , title , category , _id , image } = post;
+  const { _createdAt , views , description ,author:{_id: authorId , name , image: profile_url} , title , category , _id , image: startup_image } = post;
   return (
     <li className="startup-card group">
         <div className="flex flex-between">
@@ -31,14 +32,14 @@ const StartupCard = ({post}: {post: startupTypeCard}) => {
               </Link>
           </div>
           <Link href={`users/${authorId}`} className="w-[48px] h-[48px] border-[3px] border-black flex items-center justify-center rounded-[50%] overflow-hidden object-cover">
-              <Image src={profile_url} alt="" width="48" height="48"/>
+              <img src={profile_url} alt="" width="48" height="48"/>
           </Link>
         </div>
         <Link href={`/startup/${_id}`}>
         <p className="startup-card_desc">
           {description}
         </p>
-        <img src={image} alt="placeholder" className="startup-card_img object-cover"   />
+        <img src={startup_image} alt="placeholder" className="startup-card_img object-cover"   />
         </Link>
         <div className="flex-betweem gap-3 mt-5">
           <Link href={`/?qurey=${category.toLowerCase()}`}>
