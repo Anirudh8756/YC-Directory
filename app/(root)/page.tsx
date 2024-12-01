@@ -1,48 +1,56 @@
-import SearchForm from "../../components/searchForm";
+import SearchForm from "@/components/SearchForm";
 import StartupCard, { StartupTypeCard } from "@/components/StartupCard";
-import { STARTUPS_QUERY } from "@/sanity/lib/query";
+import { STARTUPS_QUERY } from "@/sanity/lib/queries";
 import { sanityFetch, SanityLive } from "@/sanity/lib/live";
+import { auth } from "@/auth";
 
-export default async function Home({searchParams} : {searchParams: Promise<{query?: string}>}) {
-  const query = (await searchParams).query; 
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: Promise<{ query?: string }>;
+}) {
+  const query = (await searchParams).query;
   const params = { search: query || null };
-  const {data: posts} = await sanityFetch({query: STARTUPS_QUERY, params})
-  const mappedPosts = posts.map((post: any) => ({
-    _id: post._id,
-    title: post.title,
-    slug: post.slug ,
-    author: post.author,
-    views: post.views,
-    description: post.description,
-    category: post.category,
-    image: post.image,
-    pitch: post.pitch,
-  }))  as StartupTypeCard[];
+
+  const session = await auth();
+
+  console.log(session?.id);
+
+  const { data: posts } = await sanityFetch({ query: STARTUPS_QUERY, params });
+
   return (
     <>
-    <section className="pink_container">
-        <div className="heading">
-          pitch your startup, <br/>
-          Connect with entrepreneurs
-        </div>
-          <p className="sub-heading !max-w-3xl">Submit Ideas, Vote on Pitches, and Get Noticed in Virtual Competitions.</p>
-          <SearchForm query={query}/>
-      </section>
-      <section className="section_container">
-        <p className="text-30-semibold"> 
-          {query ? `Search results for ${query}` : 'All Startups'}
+      <section className="pink_container">
+        <h1 className="heading">
+          Pitch Your Startup, <br />
+          Connect With Entrepreneurs
+        </h1>
+
+        <p className="sub-heading !max-w-3xl">
+          Submit Ideas, Vote on Pitches, and Get Noticed in Virtual
+          Competitions.
         </p>
 
-<ul className="mt-7 card_grid"> 
-  {mappedPosts?.length > 0 
-    ? mappedPosts.map((post: StartupTypeCard) => (
-        <StartupCard key={post._id} post={post} />
-      ))
-    : <p className="no-results">No Startup Found</p>
-  }
-</ul>
+        <SearchForm query={query} />
       </section>
-      <SanityLive/>    
+
+      <section className="section_container">
+        <p className="text-30-semibold">
+          {query ? `Search results for "${query}"` : "All Startups"}
+        </p>
+
+        <ul className="mt-7 card_grid">
+          {posts?.length > 0 ? (
+            posts.map((post: StartupTypeCard) => (
+              <StartupCard key={post?._id} post={post} />
+            ))
+          ) : (
+            <p className="no-results">No startups found</p>
+          )}
+        </ul>
+      </section>
+
+      <SanityLive />
     </>
   );
 }
