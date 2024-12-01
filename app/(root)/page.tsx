@@ -7,17 +7,17 @@ export default async function Home({searchParams} : {searchParams: Promise<{quer
   const query = (await searchParams).query; 
   const params = { search: query || null };
   const {data: posts} = await sanityFetch({query: STARTUPS_QUERY, params})
-  const mappedPosts = posts.map((post) => ({
+  const mappedPosts = posts.map((post: any) => ({
     _id: post._id,
     title: post.title,
-    slug: post.slug,
+    slug: post.slug ,
     author: post.author,
     views: post.views,
     description: post.description,
     category: post.category,
     image: post.image,
     pitch: post.pitch,
-  } as StartupTypeCard));
+  }))  as StartupTypeCard[];
   return (
     <>
     <section className="pink_container">
